@@ -1,0 +1,169 @@
+$orange: orange;
+$white: #fff;
+
+.main {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  padding: 8px 16px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+
+  @mixin dropdown {
+    border: 2px solid orange !important;
+    background: none;
+    font-size: 11px;
+    height: 25px;
+    border-radius: 8px;
+  }
+
+  &__tabstrip {
+    display: flex;
+    align-items: center;
+    width: 436px;
+
+    font-size: 13px;
+    background: #f2f2f2;
+    border-radius: 15px;
+    outline-offset: 10px;
+    padding: 2px;
+
+    & .active {
+      background: orange;
+      color: white;
+      padding: 6px 16px;
+      border-radius: 15px;
+    }
+  }
+
+  &__tabstrip_text {
+    padding: 6px 16px;
+    cursor: pointer;
+    color: #5a5a5a;
+  }
+
+  .navigation__branch_and_create {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20px;
+    width: 100%;
+
+    &__filters {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-left: 20px;
+      font-size: 13px;
+
+      &__branch {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        &__dropdown {
+          @include dropdown
+        }
+      }
+
+      &__office {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        &__dropdown {
+          @include dropdown
+        }
+      }
+
+      &__type {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        &__dropdown {
+          @include dropdown
+        }
+      }
+
+      &__reset {
+        background: #ffe8c4;
+        padding: 2px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    }
+
+    &__btn_block {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: 20px;
+
+      &__btn_create {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffb034;
+        color: white;
+        border: none;
+        padding: 10px 16px 12px 6px;
+        border-radius: 8px;
+      }
+
+      &__switch {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        &__block {
+          border-radius: 8px;
+          padding: 10px 5px;
+          color: #626262;
+          cursor: pointer;
+        }
+
+        &__layout_grid {
+          border-radius: 8px;
+          padding: 10px 5px;
+          cursor: pointer;
+          color: #626262;
+        }
+
+        &__active {
+          background: orange;
+          border-radius: 8px;
+          padding: 10px 5px;
+          color: white;
+          cursor: pointer;
+        }
+      }
+    }
+
+  }
+}
+
+
+// ------------------------------------------------
+
+.statistics {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+
+  &__static_circle {
+    display: flex;
+
+    &__value {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+}

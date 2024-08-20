@@ -1,6 +1,8 @@
+import {Main} from "./components/main.tsx";
+import "./App.scss"
 
 export const App = () => {
-  return <>
-    123
-  </>
+  return <div className='document'>
+     <Main />
+   </div>
 }
