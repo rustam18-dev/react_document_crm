@@ -3,15 +3,16 @@ $white: #fff;
 
 .main {
   width: 100%;
-  height: 100%;
+  height: 97vh;
   border-radius: 10px;
   border: 1px solid #eee;
-  padding: 8px 16px;
+  padding: 8px 0;
 }
 
 .navigation {
   display: flex;
   align-items: center;
+  padding: 0 16px 5px;
 
   @mixin dropdown {
     border: 2px solid orange !important;
@@ -24,7 +25,7 @@ $white: #fff;
   &__tabstrip {
     display: flex;
     align-items: center;
-    width: 436px;
+    width: 438px;
 
     font-size: 13px;
     background: #f2f2f2;
@@ -104,6 +105,7 @@ $white: #fff;
       gap: 20px;
 
       &__btn_create {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -112,6 +114,52 @@ $white: #fff;
         border: none;
         padding: 10px 16px 12px 6px;
         border-radius: 8px;
+        cursor: pointer;
+
+
+        &__dropdown {
+          position: absolute;
+          width: 130px;
+          border-radius: 10px;
+          border: 1px solid orange;
+          z-index: 2;
+          background: #fff;
+          color: #000;
+          text-align: start;
+          bottom: -156.5px;
+          right: -14px;
+          font-size: 13px;
+
+          & p {
+            position: relative;
+            border-top: 1px solid #e5e5e5;
+            padding: 10px 0 10px 10px;
+            transition: color .2s;
+
+            &:hover {
+              color: #f2b655;
+            }
+          }
+
+          :nth-child(1) {
+            border-top: none;
+
+            &::after {
+              content: '';
+              position: absolute;
+              width: 12.6px;
+              height: 12.6px;
+              background: #fff;
+              z-index: 3;
+              top: -7.4px;
+              right: 56px;
+              transform: rotate(45deg);
+              border-top: 1px solid orange;
+              border-left: 1px solid orange;
+            }
+          }
+
+        }
       }
 
       &__switch {
@@ -156,6 +204,53 @@ $white: #fff;
   align-items: center;
   width: 100%;
   gap: 20px;
+  font-size: 13px;
+  border-top: 1.5px solid #ccc;
+  padding: 5px 0;
+  -webkit-box-shadow: 0px 17px 21px -10px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: 0px 17px 21px -10px rgba(0, 0, 0, 0.55);
+  box-shadow: 0px 17px 21px -10px rgba(0, 0, 0, 0.55);
+  color: #575757;
+
+  &__total {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    margin-right: 10px;
+
+    &::after {
+      position: absolute;
+      top: 5px;
+      right: -20px;
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: #dfdfdf;
+    }
+
+    &__count {
+      font-size: 24px;
+      color: #000;
+
+      span {
+        font-size: 14px;
+        color: #575757;
+      }
+    }
+
+    &__memory {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+
+      :nth-child(2) {
+        color: #ffa665;
+      }
+    }
+  }
 
   &__static_circle {
     display: flex;
@@ -164,6 +259,39 @@ $white: #fff;
       display: flex;
       flex-direction: column;
       gap: 15px;
+
+      &__count {
+
+        :nth-child(1) {
+          font-size: 24px;
+          color: #000
+        }
+      }
+
+      &__lists {
+        :nth-child(1) {
+          color: #000;
+        }
+
+        :nth-child(2) {
+          opacity: .6;
+        }
+      }
     }
   }
+}
+
+// ------------------------------------------------
+
+
+
+
+// ------------------------------------------------
+
+
+.table_document {
+  background: #fafbfb;
+  -webkit-box-shadow: inset 0px 2px 21px -10px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: inset 0px 2px 21px -10px rgba(0, 0, 0, 0.55);
+  box-shadow: inset 0px 2px 21px -10px rgba(0, 0, 0, 0.55);
 }

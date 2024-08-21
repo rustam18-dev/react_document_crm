@@ -1,0 +1,41 @@
+.directory_dialog {
+
+  .k-dialog {
+    display: flex;
+    width: 40vw;
+    position: absolute;
+    top: 50%;
+    bottom: 0;
+    border-radius: 15px;
+  }
+
+  .k-window-titlebar  {
+    border-radius: 15px;
+  }
+
+  &__content {
+    padding: 8px 24px;
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      &__name {
+
+      }
+
+      &__comment {
+        height: 100px;
+      }
+      
+      &__block_tag {
+        
+        &__tags {
+          display: flex;
+          gap: 10px;
+        }
+      }
+    }
+  }
+}

@@ -1,22 +1,63 @@
 import styles from "./main.module.scss"
 import {
+  Checkbox,
   CircularGauge,
+  Dialog,
   DropDownList,
+  RadioButton,
+  RadioGroup,
   TabStrip,
   TabStripTab,
+  TextArea,
+  TextBox,
 } from "@progress/kendo-react-all"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { AlignJustify, Building, LayoutGrid, Plus, X } from "lucide-react"
+import { DocumentLayoutGrid } from "./data/DocumentLayoutGrid.tsx"
 
 export const Main = () => {
   const [selectedTab, setSelectedTab] = useState(0)
   const [optionLayout, setOptionLayout] = useState(true)
+  const [isCreate, setIsCreate] = useState<boolean>(false)
+  const [visibleDialogDirectory, setVisibleDialogDirectory] =
+    useState<boolean>(false)
+  const [visibleDialogDownload, setVisibleDialogDownload] =
+    useState<boolean>(false)
+
+  const dropdownRef = useRef(null)
+
   const handleSelectTab = (id: number) => {
     setSelectedTab(id)
   }
 
   const handleSelectOption = (option: boolean) => {
     setOptionLayout(option)
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // @ts-ignore
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)!
+      ) {
+        setIsCreate(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [dropdownRef])
+
+  const toggleDialogDirectory = () => {
+    setVisibleDialogDirectory(!visibleDialogDirectory)
+  }
+
+  const toggleDialogDownload = () => {
+    setVisibleDialogDownload(!visibleDialogDownload)
   }
 
   return (
@@ -126,12 +167,26 @@ export const Main = () => {
           </div>
           <div className={styles.navigation__branch_and_create__btn_block}>
             <button
+              onClick={() => setIsCreate(!isCreate)}
               className={
                 styles.navigation__branch_and_create__btn_block__btn_create
               }
             >
               <Plus size={16} />
               <span>Создать</span>
+              {isCreate && (
+                <div
+                  ref={dropdownRef}
+                  className={
+                    styles.navigation__branch_and_create__btn_block__btn_create__dropdown
+                  }
+                >
+                  <p onClick={toggleDialogDownload}>Файл</p>
+                  <p onClick={toggleDialogDirectory}>Новая папка</p>
+                  <p>ZIP архив</p>
+                  <p>Документ</p>
+                </div>
+              )}
             </button>
             <div
               className={
@@ -161,13 +216,57 @@ export const Main = () => {
         </div>
       </div>
 
+      {visibleDialogDirectory && (
+        <Dialog
+          title={"Новая папка"}
+          onClose={toggleDialogDirectory}
+          className="directory_dialog"
+        >
+          <div className="directory_dialog__content">
+            <form className="directory_dialog__content__form">
+              <div>
+                <label>Наименнование</label>
+                <TextBox className="directory_dialog__content__form__name" />
+              </div>
+              <div>
+                <label>Комментарий</label>
+                <TextArea className="directory_dialog__content__form__comment" />
+              </div>
+              <div className="directory_dialog__content__form__block_tag">
+                <label>Выберите тег</label>
+                <div className="directory_dialog__content__form__block_tag__tags">
+                  <RadioButton name={"tag"} />
+                  <RadioButton name={"tag"} />
+                  <RadioButton name={"tag"} />
+                  <RadioButton name={"tag"} />
+                  <RadioButton name={"tag"} />
+                  <RadioButton name={"tag"} />
+                </div>
+              </div>
+            </form>
+          </div>
+        </Dialog>
+      )}
+
+      {visibleDialogDownload && (
+        <Dialog
+          title={"Загрузка файлов"}
+          onClose={toggleDialogDownload}
+          className="download_file"
+        ></Dialog>
+      )}
+
       <TabStrip style={{ width: "100%" }} selected={selectedTab}>
         <TabStripTab title="Мои файлы" contentClassName={styles.tabstrip}>
           <div className={styles.statistics}>
-            <div>
-              <h2>68 файлов</h2>
-              <p>Всего занято</p>
-              <p>10 / 80 гб</p>
+            <div className={styles.statistics__total}>
+              <p className={styles.statistics__total__count}>
+                68 <span>файлов</span>
+              </p>
+              <div className={styles.statistics__total__memory}>
+                <p>Всего занято</p>
+                <p>10 / 80 гб</p>
+              </div>
             </div>
             <div className={styles.statistics__static_circle}>
               <CircularGauge
@@ -177,8 +276,11 @@ export const Main = () => {
                 style={{ width: "60px", height: "60px" }}
               />
               <div className={styles.statistics__static_circle__value}>
-                <div>10 из 68</div>
-                <div>
+                <div className={styles.statistics__static_circle__value__count}>
+                  <span>10 </span>
+                  <span> из 68</span>
+                </div>
+                <div className={styles.statistics__static_circle__value__lists}>
                   <p>Тестовые документы</p>
                   <p>*.doc, .docx, .odt, .txt, .rtf</p>
                 </div>
@@ -192,8 +294,11 @@ export const Main = () => {
                 style={{ width: "60px", height: "60px" }}
               />
               <div className={styles.statistics__static_circle__value}>
-                <div>20 из 68</div>
-                <div>
+                <div className={styles.statistics__static_circle__value__count}>
+                  <span>20 </span>
+                  <span> из 68</span>
+                </div>
+                <div className={styles.statistics__static_circle__value__lists}>
                   <p>Электронная таблица</p>
                   <p>*.doc, .docx, .odt, .txt, .rtf</p>
                 </div>
@@ -207,8 +312,11 @@ export const Main = () => {
                 style={{ width: "60px", height: "60px" }}
               />
               <div className={styles.statistics__static_circle__value}>
-                <div>10 из 68</div>
-                <div>
+                <div className={styles.statistics__static_circle__value__count}>
+                  <span>10 </span>
+                  <span> из 68</span>
+                </div>
+                <div className={styles.statistics__static_circle__value__lists}>
                   <p>Презентации</p>
                   <p>*.doc, .docx, .odt, .txt, .rtf</p>
                 </div>
@@ -222,8 +330,11 @@ export const Main = () => {
                 style={{ width: "60px", height: "60px" }}
               />
               <div className={styles.statistics__static_circle__value}>
-                <div>10 из 68</div>
-                <div>
+                <div className={styles.statistics__static_circle__value__count}>
+                  <span>10 </span>
+                  <span> из 68</span>
+                </div>
+                <div className={styles.statistics__static_circle__value__lists}>
                   <p>Документы</p>
                   <p>*.doc, .docx, .odt, .txt, .rtf</p>
                 </div>
@@ -237,14 +348,26 @@ export const Main = () => {
                 style={{ width: "60px", height: "60px" }}
               />
               <div className={styles.statistics__static_circle__value}>
-                <div>10 из 68</div>
-                <p>Другие файлы</p>
+                <div className={styles.statistics__static_circle__value__count}>
+                  <span>10 </span>
+                  <span> из 68</span>
+                </div>
+                <div className={styles.statistics__static_circle__value__lists}>
+                  <p>Другие файлы</p>
+                  <p style={{ visibility: "hidden" }}>
+                    *.doc, .docx, .odt, .txt, .rtf
+                  </p>
+                </div>
               </div>
             </div>
           </div>
+
+          <div className={styles.table_document}>
+            <DocumentLayoutGrid />
+          </div>
         </TabStripTab>
         <TabStripTab title="Файлы клиента">
-          <p>Tab 2 Content</p>
+          <p>Файлы клиента</p>
         </TabStripTab>
         <TabStripTab title="Корзина: -">
           <p>Корзина: -</p>
