@@ -1,27 +1,26 @@
+////ts-nocheck
+
 import styles from "./main.module.scss"
 import {
-  Checkbox,
   CircularGauge,
-  Dialog,
   DropDownList,
-  RadioButton,
-  RadioGroup,
   TabStrip,
   TabStripTab,
-  TextArea,
-  TextBox,
 } from "@progress/kendo-react-all"
 import { useEffect, useRef, useState } from "react"
 import { AlignJustify, Building, LayoutGrid, Plus, X } from "lucide-react"
 import { DocumentLayoutGrid } from "./data/DocumentLayoutGrid.tsx"
+import { DialogDirectory } from "./ui/dialog/DialogDirectory/DialogDirectory.tsx"
+import { DialogDownload } from "./ui/dialog/DialogDownload/DialogDownload.tsx"
 
 export const Main = () => {
   const [selectedTab, setSelectedTab] = useState(0)
   const [optionLayout, setOptionLayout] = useState(true)
   const [isCreate, setIsCreate] = useState<boolean>(false)
-  const [visibleDialogDirectory, setVisibleDialogDirectory] =
-    useState<boolean>(false)
+
   const [visibleDialogDownload, setVisibleDialogDownload] =
+    useState<boolean>(false)
+  const [visibleDialogDirectory, setVisibleDialogDirectory] =
     useState<boolean>(false)
 
   const dropdownRef = useRef(null)
@@ -36,7 +35,6 @@ export const Main = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // @ts-ignore
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)!
@@ -217,43 +215,11 @@ export const Main = () => {
       </div>
 
       {visibleDialogDirectory && (
-        <Dialog
-          title={"Новая папка"}
-          onClose={toggleDialogDirectory}
-          className="directory_dialog"
-        >
-          <div className="directory_dialog__content">
-            <form className="directory_dialog__content__form">
-              <div>
-                <label>Наименнование</label>
-                <TextBox className="directory_dialog__content__form__name" />
-              </div>
-              <div>
-                <label>Комментарий</label>
-                <TextArea className="directory_dialog__content__form__comment" />
-              </div>
-              <div className="directory_dialog__content__form__block_tag">
-                <label>Выберите тег</label>
-                <div className="directory_dialog__content__form__block_tag__tags">
-                  <RadioButton name={"tag"} />
-                  <RadioButton name={"tag"} />
-                  <RadioButton name={"tag"} />
-                  <RadioButton name={"tag"} />
-                  <RadioButton name={"tag"} />
-                  <RadioButton name={"tag"} />
-                </div>
-              </div>
-            </form>
-          </div>
-        </Dialog>
+        <DialogDirectory onClose={toggleDialogDirectory} />
       )}
 
       {visibleDialogDownload && (
-        <Dialog
-          title={"Загрузка файлов"}
-          onClose={toggleDialogDownload}
-          className="download_file"
-        ></Dialog>
+        <DialogDownload onClose={toggleDialogDownload} />
       )}
 
       <TabStrip style={{ width: "100%" }} selected={selectedTab}>

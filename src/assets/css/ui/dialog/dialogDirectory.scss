@@ -1,0 +1,140 @@
+.directory_dialog {
+
+  .k-dialog {
+    display: flex;
+    width: 42vw;
+    height: 55vh;
+    position: absolute;
+    top: 45%;
+    bottom: 0;
+    border-radius: 15px;
+  }
+
+  .k-window-titlebar {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  &__title {
+    padding: 0 34px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    &__block_btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      &__help {
+        display: flex;
+        align-items: center;
+        padding: 6px;
+      }
+
+      &__cancel {
+        padding: 8px 12px;
+        background: none;
+        border: 2px solid orange;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: bold;
+      }
+
+      &__save {
+        padding: 8px 12px;
+        background: orange;
+        color: white;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__content {
+    padding: 8px 34px;
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      font-size: 13px;
+
+      .k-input-solid:hover, .k-input-solid.k-hover {
+        border-color: orange;
+      }
+
+
+      .k-input-solid:focus-within {
+        border-color: orange;
+      }
+
+      .k-input-solid:focus, .k-input-solid.k-focus {
+        border-color: orange;
+      }
+
+
+      &__name {
+        padding: 6px 8px;
+        border: 2px solid orange;
+        border-radius: 8px;
+        background: #fff8ef;
+        margin-top: 4px;
+
+
+        ::placeholder {
+          font-size: 13px !important;
+        }
+
+      }
+
+      &__comment {
+        height: 100px;
+        padding: 6px 8px;
+        border: 2px solid orange;
+        border-radius: 8px;
+        background: #fff8ef;
+        margin-top: 4px;
+
+        ::placeholder {
+          font-size: 13px !important;
+        }
+
+      }
+
+      &__block_tag {
+
+        &__tags {
+          display: flex;
+          gap: 10px;
+          margin-top: 4px;
+
+          .k-radio:checked, .k-radio.k-checked {
+            background-image: none;
+            border: 1px solid #ffc409;
+          }
+
+        }
+      }
+    }
+  }
+}
+
+.close_dialog_directory {
+  position: absolute;
+  margin-left: -90px;
+  width: 40px;
+  z-index: 10005;
+  cursor: pointer;
+
+  & div {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    background-color: orange;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+}

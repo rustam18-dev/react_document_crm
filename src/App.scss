@@ -1,6 +1,7 @@
 @import "assets/css/tabstrip";
-@import "assets/css/dialogDirectory";
-@import "assets/css/dialogDownloadFile";
+@import "assets/css/modal";
+@import "assets/css/ui/dialog/dialogDirectory";
+@import "assets/css/ui/dialog/dialogDownloadFile";
 
 .document {
   padding: 10px;
