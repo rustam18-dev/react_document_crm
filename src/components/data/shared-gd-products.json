@@ -8,7 +8,7 @@
     "branch": "001",
     "office": "Душанбе",
     "who_changed_upload": "Иванов Антон Петрович",
-    "is_recent_file": "Недавние файлы:"
+    "is_recent_file": true
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
     "branch": "002",
     "office": "Худжанд",
     "who_changed_upload": "Петров Иван Иванович",
-    "is_recent_file": "Недавние файлы:"
+    "is_recent_file": true
   },
   {
     "id": 3,
@@ -30,7 +30,7 @@
     "branch": "003",
     "office": "Куляб",
     "who_changed_upload": "Сидоров Сергей Петрович",
-    "is_recent_file": "Недавние файлы:"
+    "is_recent_file": true
   },
   {
     "id": 4,
@@ -41,7 +41,7 @@
     "branch": "004",
     "office": "Бохтар",
     "who_changed_upload": "Кузнецов Николай Иванович",
-    "is_recent_file": "Недавние файлы:"
+    "is_recent_file": true
   },
   {
     "id": 5,
@@ -52,7 +52,7 @@
     "branch": "005",
     "office": "Хорог",
     "who_changed_upload": "Лебедев Дмитрий Сергеевич",
-    "is_recent_file": "Недавние файлы:"
+    "is_recent_file": true
   },
   {
     "id": 6,
@@ -63,7 +63,7 @@
     "branch": "006",
     "office": "Вахдат",
     "who_changed_upload": "Михайлов Сергей Николаевич",
-    "is_recent_file": "Все файлы:"
+    "is_recent_file": false
   },
   {
     "id": 7,
@@ -74,7 +74,7 @@
     "branch": "007",
     "office": "Курган-Тюбе",
     "who_changed_upload": "Федоров Андрей Михайлович",
-    "is_recent_file": "Все файлы:"
+    "is_recent_file": false
   },
   {
     "id": 8,
@@ -85,7 +85,7 @@
     "branch": "008",
     "office": "Куляб",
     "who_changed_upload": "Романов Иван Иванович",
-    "is_recent_file": "Все файлы:"
+    "is_recent_file": false
   },
   {
     "id": 9,
@@ -96,7 +96,7 @@
     "branch": "009",
     "office": "Душанбе",
     "who_changed_upload": "Иванов Антон Петрович",
-    "is_recent_file": "Все файлы:"
+    "is_recent_file": false
   },
   {
     "id": 10,
@@ -107,6 +107,6 @@
     "branch": "009",
     "office": "Душанбе",
     "who_changed_upload": "Антонов Пётр Иванович",
-    "is_recent_file": "Все файлы:"
+    "is_recent_file": false
   }
 ]

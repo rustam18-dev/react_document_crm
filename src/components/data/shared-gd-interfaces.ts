@@ -1,5 +1,5 @@
 export interface IFile {
-  id: number
+  id: number | string
   filename: string
   date_download: string
   type_document: string
@@ -8,5 +8,5 @@ export interface IFile {
   office: string
   who_changed_upload: string
   selected?: boolean
-  is_recent_file: string
+  is_recent_file: boolean
 }

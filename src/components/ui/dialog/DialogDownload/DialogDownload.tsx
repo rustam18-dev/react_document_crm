@@ -1,83 +1,40 @@
-import { Dialog } from "@progress/kendo-react-all"
+import {
+  Dialog,
+  Upload,
+  UploadListItemProps,
+  UploadOnAddEvent,
+} from "@progress/kendo-react-all"
 import { DialogDownloadTitle } from "./DialogDownloadTitle.tsx"
 import { CircleCheck, CirclePlus, CircleX } from "lucide-react"
+import { useEffect, useRef } from "react"
+import "../../../../assets/css/ui/dialog/dialogDownloadFile.scss"
 
 type Props = {
   onClose: () => void
 }
 
-const files = [
-  {
-    id: 1,
-    color: "#378fdb",
-    iconPath:
-      "M3.413,3.617a2.873,2.873,0,0,1-.286-.6L.2-9.241s-.145-.474,0-.667.582-.107.582-.107h1.3a1.072,1.072,0,0,1,.652.107.916.916,0,0,1,.276.564L4.936-.559l2.322-8.72A1.105,1.105,0,0,1,7.6-9.909a1.134,1.134,0,0,1,.712-.107H9.9a1.221,1.221,0,0,1,.742.107.989.989,0,0,1,.3.629L13.172-.4l1.977-8.88a1.307,1.307,0,0,1,.279-.629.69.69,0,0,1,.546-.107h1.237s.511-.089.682.107,0,.676,0,.676L14.908,3.06a1.034,1.034,0,0,1-.3.557A1.019,1.019,0,0,1,14,3.751H12.2a.367.367,0,0,1-.338-.134,1.68,1.68,0,0,1-.217-.557l-2.593-9.6L6.5,3.072a.945.945,0,0,1-.39.545,1.737,1.737,0,0,1-.8.134H3.69S3.554,3.8,3.413,3.617Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 2,
-    status: "active",
-    color: "#bc534e",
-    iconPath:
-      "M.655,2.185V-6.442h2.8a10.137,10.137,0,0,1,2.072.129,2.262,2.262,0,0,1,1.242.844,2.678,2.678,0,0,1,.5,1.68,2.815,2.815,0,0,1-.288,1.336,2.366,2.366,0,0,1-.733.85,2.525,2.525,0,0,1-.9.409,9.944,9.944,0,0,1-1.807.124H2.4V2.185ZM2.4-4.983v2.448H3.35A4.5,4.5,0,0,0,4.727-2.67a1.144,1.144,0,0,0,.544-.424,1.16,1.16,0,0,0,.2-.671,1.114,1.114,0,0,0-.277-.777,1.2,1.2,0,0,0-.7-.383,8.373,8.373,0,0,0-1.253-.059ZM8.688-6.442h3.184a6.217,6.217,0,0,1,1.642.165,2.885,2.885,0,0,1,1.3.794,3.769,3.769,0,0,1,.824,1.4,6.367,6.367,0,0,1,.282,2.039A5.67,5.67,0,0,1,15.656-.21a3.8,3.8,0,0,1-.924,1.524A3.062,3.062,0,0,1,13.508,2a5.27,5.27,0,0,1-1.542.182H8.688ZM10.43-4.983V.731h1.3A4.746,4.746,0,0,0,12.784.649a1.608,1.608,0,0,0,.7-.359,1.827,1.827,0,0,0,.456-.833,5.628,5.628,0,0,0,.177-1.58,5.154,5.154,0,0,0-.177-1.536,1.974,1.974,0,0,0-.494-.836,1.658,1.658,0,0,0-.806-.406,7.9,7.9,0,0,0-1.43-.082Zm6.98,7.168V-6.442h5.914v1.459H19.151v2.042h3.6v1.459h-3.6V2.185Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 3,
-    color: "#2fb797",
-    iconPath:
-      "M-2.845,5.59q-1.121,0-.472-.958L1.03-1.674-2.8-7.244q-.657-.958.472-.958H.151a.97.97,0,0,1,.893.526L3.08-4.13,5.113-7.678a.97.97,0,0,1,.9-.52H8.491q1.143,0,.472.958L5.1-1.674,9.485,4.631q.673.958-.472.958H6.522a.989.989,0,0,1-.893-.525L3.08.783.531,5.065a.989.989,0,0,1-.893.525Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 4,
-    status: "active",
-    color: "#378fdb",
-    iconPath:
-      "M3.413,3.617a2.873,2.873,0,0,1-.286-.6L.2-9.241s-.145-.474,0-.667.582-.107.582-.107h1.3a1.072,1.072,0,0,1,.652.107.916.916,0,0,1,.276.564L4.936-.559l2.322-8.72A1.105,1.105,0,0,1,7.6-9.909a1.134,1.134,0,0,1,.712-.107H9.9a1.221,1.221,0,0,1,.742.107.989.989,0,0,1,.3.629L13.172-.4l1.977-8.88a1.307,1.307,0,0,1,.279-.629.69.69,0,0,1,.546-.107h1.237s.511-.089.682.107,0,.676,0,.676L14.908,3.06a1.034,1.034,0,0,1-.3.557A1.019,1.019,0,0,1,14,3.751H12.2a.367.367,0,0,1-.338-.134,1.68,1.68,0,0,1-.217-.557l-2.593-9.6L6.5,3.072a.945.945,0,0,1-.39.545,1.737,1.737,0,0,1-.8.134H3.69S3.554,3.8,3.413,3.617Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 5,
-    color: "#bc534e",
-    iconPath:
-      "M.655,2.185V-6.442h2.8a10.137,10.137,0,0,1,2.072.129,2.262,2.262,0,0,1,1.242.844,2.678,2.678,0,0,1,.5,1.68,2.815,2.815,0,0,1-.288,1.336,2.366,2.366,0,0,1-.733.85,2.525,2.525,0,0,1-.9.409,9.944,9.944,0,0,1-1.807.124H2.4V2.185ZM2.4-4.983v2.448H3.35A4.5,4.5,0,0,0,4.727-2.67a1.144,1.144,0,0,0,.544-.424,1.16,1.16,0,0,0,.2-.671,1.114,1.114,0,0,0-.277-.777,1.2,1.2,0,0,0-.7-.383,8.373,8.373,0,0,0-1.253-.059ZM8.688-6.442h3.184a6.217,6.217,0,0,1,1.642.165,2.885,2.885,0,0,1,1.3.794,3.769,3.769,0,0,1,.824,1.4,6.367,6.367,0,0,1,.282,2.039A5.67,5.67,0,0,1,15.656-.21a3.8,3.8,0,0,1-.924,1.524A3.062,3.062,0,0,1,13.508,2a5.27,5.27,0,0,1-1.542.182H8.688ZM10.43-4.983V.731h1.3A4.746,4.746,0,0,0,12.784.649a1.608,1.608,0,0,0,.7-.359,1.827,1.827,0,0,0,.456-.833,5.628,5.628,0,0,0,.177-1.58,5.154,5.154,0,0,0-.177-1.536,1.974,1.974,0,0,0-.494-.836,1.658,1.658,0,0,0-.806-.406,7.9,7.9,0,0,0-1.43-.082Zm6.98,7.168V-6.442h5.914v1.459H19.151v2.042h3.6v1.459h-3.6V2.185Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 6,
-    status: "active",
-    color: "#2fb797",
-    iconPath:
-      "M-2.845,5.59q-1.121,0-.472-.958L1.03-1.674-2.8-7.244q-.657-.958.472-.958H.151a.97.97,0,0,1,.893.526L3.08-4.13,5.113-7.678a.97.97,0,0,1,.9-.52H8.491q1.143,0,.472.958L5.1-1.674,9.485,4.631q.673.958-.472.958H6.522a.989.989,0,0,1-.893-.525L3.08.783.531,5.065a.989.989,0,0,1-.893.525Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 7,
-    color: "#378fdb",
-    iconPath:
-      "M3.413,3.617a2.873,2.873,0,0,1-.286-.6L.2-9.241s-.145-.474,0-.667.582-.107.582-.107h1.3a1.072,1.072,0,0,1,.652.107.916.916,0,0,1,.276.564L4.936-.559l2.322-8.72A1.105,1.105,0,0,1,7.6-9.909a1.134,1.134,0,0,1,.712-.107H9.9a1.221,1.221,0,0,1,.742.107.989.989,0,0,1,.3.629L13.172-.4l1.977-8.88a1.307,1.307,0,0,1,.279-.629.69.69,0,0,1,.546-.107h1.237s.511-.089.682.107,0,.676,0,.676L14.908,3.06a1.034,1.034,0,0,1-.3.557A1.019,1.019,0,0,1,14,3.751H12.2a.367.367,0,0,1-.338-.134,1.68,1.68,0,0,1-.217-.557l-2.593-9.6L6.5,3.072a.945.945,0,0,1-.39.545,1.737,1.737,0,0,1-.8.134H3.69S3.554,3.8,3.413,3.617Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-  {
-    id: 8,
-    status: "active",
-    color: "#bc534e",
-    iconPath:
-      "M.655,2.185V-6.442h2.8a10.137,10.137,0,0,1,2.072.129,2.262,2.262,0,0,1,1.242.844,2.678,2.678,0,0,1,.5,1.68,2.815,2.815,0,0,1-.288,1.336,2.366,2.366,0,0,1-.733.85,2.525,2.525,0,0,1-.9.409,9.944,9.944,0,0,1-1.807.124H2.4V2.185ZM2.4-4.983v2.448H3.35A4.5,4.5,0,0,0,4.727-2.67a1.144,1.144,0,0,0,.544-.424,1.16,1.16,0,0,0,.2-.671,1.114,1.114,0,0,0-.277-.777,1.2,1.2,0,0,0-.7-.383,8.373,8.373,0,0,0-1.253-.059ZM8.688-6.442h3.184a6.217,6.217,0,0,1,1.642.165,2.885,2.885,0,0,1,1.3.794,3.769,3.769,0,0,1,.824,1.4,6.367,6.367,0,0,1,.282,2.039A5.67,5.67,0,0,1,15.656-.21a3.8,3.8,0,0,1-.924,1.524A3.062,3.062,0,0,1,13.508,2a5.27,5.27,0,0,1-1.542.182H8.688ZM10.43-4.983V.731h1.3A4.746,4.746,0,0,0,12.784.649a1.608,1.608,0,0,0,.7-.359,1.827,1.827,0,0,0,.456-.833,5.628,5.628,0,0,0,.177-1.58,5.154,5.154,0,0,0-.177-1.536,1.974,1.974,0,0,0-.494-.836,1.658,1.658,0,0,0-.806-.406,7.9,7.9,0,0,0-1.43-.082Zm6.98,7.168V-6.442h5.914v1.459H19.151v2.042h3.6v1.459h-3.6V2.185Z",
-    fileName: "Анкета клиента финансового учереждения.docx",
-    percentage: "100%",
-  },
-]
-
 export const DialogDownload = ({ onClose }: Props) => {
+  const documentsRef = useRef<HTMLDivElement | null>(null)
+  const block_upload = useRef<HTMLDivElement | null>(null)
+  const btn_upload = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (btn_upload.current && block_upload.current) {
+      block_upload.current.appendChild(btn_upload.current)
+    }
+  }, [block_upload, btn_upload])
+
+  const handleAddFiles = (e: UploadOnAddEvent) => {
+    console.log(e)
+    const kUploadFiles = document.querySelector(
+      ".k-upload-files",
+    ) as HTMLElement
+
+    if (kUploadFiles && documentsRef.current) {
+      documentsRef.current.appendChild(kUploadFiles)
+    }
+  }
+
   return (
     <>
       <Dialog
@@ -85,66 +42,85 @@ export const DialogDownload = ({ onClose }: Props) => {
         className="download_file"
         closeIcon={false}
       >
-        <div className="download_file__content">
-          {files.map((file) => (
-            <div
-              key={file.id}
-              className={`download_file__content__item ${file.status ? "download_file__content__active" : ""}`}
-            >
-              <div className="download_file__content__item__first">
-                {file.id}
-              </div>
-              <div className="download_file__content__item__second">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="34.828"
-                  viewBox="0 0 30 34.828"
-                >
-                  <g transform="translate(-256 -331)">
-                    <path
-                      d="M3.448,0h23.1A3.448,3.448,0,0,1,30,3.448V31.379a3.448,3.448,0,0,1-3.448,3.448H3.448A3.448,3.448,0,0,1,0,31.379V3.448A3.448,3.448,0,0,1,3.448,0Z"
-                      transform="translate(256 331)"
-                      fill={file.color}
-                    />
-                    <path
-                      d={file.iconPath}
-                      transform="translate(261.901 351.726)"
-                      fill="#fff"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <div className="download_file__content__item__third">
-                {file.fileName}
-              </div>
-              <div className="download_file__content__item__fourth">
-                <CircleCheck color={"orange"} />
-              </div>
-              <div className="download_file__content__item__fifth">
-                <span>{file.percentage}</span>
-                <span>
-                  <CircleX color={"grey"} />
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+        <div ref={documentsRef} className="download_file__content"></div>
         <div className="download_file__line" />
+
         <div className="download_file__add_file">
           <p>Добавить ещё файлы?</p>
-          <div className="download_file__add_file__block">
+          <div className="download_file__add_file__block" ref={block_upload}>
             <div className="download_file__add_file__block__add">
-              <input type="file" id="file-input" />
-              <label htmlFor="file-input" className="file-label">
-                {" "}
-                <CirclePlus size={100} />
-              </label>
               <p>Перетащите сюда или нажмите здесь чтобы добавить ещё файлы</p>
             </div>
           </div>
         </div>
+
+        <div ref={btn_upload}>
+          <Upload
+            className={"upload_button"}
+            batch={true}
+            multiple={true}
+            defaultFiles={[]}
+            withCredentials={false}
+            showFileList={true}
+            listItemUI={CustomListItemUI}
+            selectMessageUI={CustomSelectMessageUI}
+            onAdd={handleAddFiles}
+            saveUrl={
+              "https://demos.telerik.com/kendo-ui/service-v4/upload/save"
+            }
+            removeUrl={
+              "https://demos.telerik.com/kendo-ui/service-v4/upload/remove"
+            }
+          />
+        </div>
       </Dialog>
+    </>
+  )
+}
+
+const CustomListItemUI = (props: UploadListItemProps) => {
+  return (
+    <ul className={"download_file__content"}>
+      {props.files.map((file, index) => (
+        <li className={"download_file__content__item"} key={file.uid}>
+          <div className="download_file__content__item__first">{index + 1}</div>
+          <div className="download_file__content__item__second">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="34.828"
+              viewBox="0 0 30 34.828"
+            >
+              <g transform="translate(-256 -331)">
+                <path
+                  d="M3.448,0h23.1A3.448,3.448,0,0,1,30,3.448V31.379a3.448,3.448,0,0,1-3.448,3.448H3.448A3.448,3.448,0,0,1,0,31.379V3.448A3.448,3.448,0,0,1,3.448,0Z"
+                  transform="translate(256 331)"
+                  fill={"#000"}
+                />
+                <path transform="translate(261.901 351.726)" fill="#fff" />
+              </g>
+            </svg>
+          </div>
+          <div className="download_file__content__item__third">{file.name}</div>
+          <div className="download_file__content__item__fourth">
+            <CircleCheck color={"orange"} />
+          </div>
+          <div className="download_file__content__item__fifth">
+            <span>{file.progress}</span>
+            <span>
+              <CircleX color={"grey"} />
+            </span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export const CustomSelectMessageUI = () => {
+  return (
+    <>
+      <CirclePlus size={100} />
     </>
   )
 }

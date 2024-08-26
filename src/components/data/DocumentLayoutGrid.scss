@@ -91,7 +91,7 @@
   }
 
   .k-table-td {
-    text-align: center;
+    text-align: center !important;
   }
 
   .k-table-td:nth-child(3) {
@@ -100,6 +100,22 @@
 
   .k-table-row {
     font-size: 13px;
+  }
+
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filename_cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
   }
 
 }

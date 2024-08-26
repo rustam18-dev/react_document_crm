@@ -1,8 +1,9 @@
-import {useDispatch} from 'react-redux'
-import {bindActionCreators} from '@reduxjs/toolkit'
+import { useDispatch } from "react-redux"
+import { bindActionCreators } from "@reduxjs/toolkit"
+import { documentActions } from "../store/document/document.slice.ts"
 
 const actions = {
-  //...githubActions
+  ...documentActions,
 }
 
 export const useActions = () => {

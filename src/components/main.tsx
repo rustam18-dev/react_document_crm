@@ -17,13 +17,12 @@ export const Main = () => {
   const [selectedTab, setSelectedTab] = useState(0)
   const [optionLayout, setOptionLayout] = useState(true)
   const [isCreate, setIsCreate] = useState<boolean>(false)
-
   const [visibleDialogDownload, setVisibleDialogDownload] =
     useState<boolean>(false)
   const [visibleDialogDirectory, setVisibleDialogDirectory] =
     useState<boolean>(false)
 
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
 
   const handleSelectTab = (id: number) => {
     setSelectedTab(id)
@@ -218,7 +217,7 @@ export const Main = () => {
         <DialogDirectory onClose={toggleDialogDirectory} />
       )}
 
-      {visibleDialogDownload && (
+      {!visibleDialogDownload && (
         <DialogDownload onClose={toggleDialogDownload} />
       )}
 

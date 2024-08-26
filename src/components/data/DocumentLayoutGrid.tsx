@@ -5,37 +5,69 @@ import {
   GridExpandChangeEvent,
   GridGroupChangeEvent,
 } from "@progress/kendo-react-grid"
-import {
-  groupBy,
-  GroupDescriptor,
-  GroupResult,
-} from "@progress/kendo-data-query"
-
+import { groupBy, GroupDescriptor } from "@progress/kendo-data-query"
 import { setExpandedState, setGroupIds } from "@progress/kendo-react-data-tools"
-
-import products from "./shared-gd-products.json"
 import { IFile } from "./shared-gd-interfaces"
 import {
-  GridCustomCellProps,
   GridHeaderSelectionChangeEvent,
   GridSelectionChangeEvent,
+  GroupResult,
 } from "@progress/kendo-react-all"
+import { useAppSelector } from "../../hooks/redux.ts"
+import {
+  ColumnMenu,
+  DateDownloadCell,
+  FileNameCell,
+  StatusCell,
+  TypeCell,
+  WhoDownloadCell,
+} from "./custom_cells.tsx"
 
 const DATA_ITEM_KEY = "id"
 const SELECTED_FIELD = "selected"
 const initialGroup: GroupDescriptor[] = [{ field: "is_recent_file" }]
 
 const processWithGroups = (data: IFile[], group: GroupDescriptor[]) => {
-  const newDataState = groupBy(data, group)
+  const newDataState: GroupResult[] | IFile[] = groupBy(data, group)
   setGroupIds({ data: newDataState, group: group })
+
+  const [firstStateItems, secondStateItems] = newDataState
+  if (
+    "items" in newDataState[1] &&
+    "items" in firstStateItems &&
+    "items" in secondStateItems
+  ) {
+    newDataState[1].items = firstStateItems.items.concat(secondStateItems.items)
+    newDataState[1].items = newDataState[1].items.map((item) => {
+      return {
+        ...item,
+        is_recent_file: false,
+      }
+    })
+  }
+
+  newDataState.forEach((state, index) => {
+    if ("value" in state) {
+      state.value = state.value ? "Недавние файлы:" : "Все файлы:"
+    }
+
+    if ("items" in state) {
+      state.items = state.items.map((item, idx) => ({
+        ...item,
+        id: `${item.id}-${index}-${idx}`,
+      }))
+    }
+  })
 
   return newDataState
 }
 
 export const DocumentLayoutGrid = () => {
+  const { documents } = useAppSelector((state) => state.document)
+
   const [group, setGroup] = React.useState(initialGroup)
-  const [resultState, setResultState] = React.useState<IFile[] | GroupResult[]>(
-    processWithGroups(products, initialGroup),
+  const [resultState, setResultState] = React.useState<(GroupResult | IFile)[]>(
+    processWithGroups(documents, initialGroup),
   )
   const [collapsedState, setCollapsedState] = React.useState<string[]>([])
 
@@ -47,7 +79,7 @@ export const DocumentLayoutGrid = () => {
     )
 
     if (areNewGroupsUnique) {
-      const newDataState = processWithGroups(products, event.group)
+      const newDataState = processWithGroups(documents, event.group)
       setGroup(event.group)
       setResultState(newDataState)
     }
@@ -73,52 +105,49 @@ export const DocumentLayoutGrid = () => {
   })
 
   const onSelectionChange = (e: GridSelectionChangeEvent) => {
-    const newData = resultState.map((states) => {
-      states.items.forEach((item: IFile) => {
-        if (item.id === e.dataItem.id) {
-          if (!item.selected) {
-            item.selected = true
-          } else {
-            delete item.selected
-          }
+    const result = JSON.parse(JSON.stringify(resultState))
+
+    const newData: (GroupResult | IFile)[] = result.map(
+      (states: GroupResult | IFile) => {
+        if ("items" in states) {
+          states.items.forEach((item: IFile) => {
+            if (item.id === e.dataItem.id) {
+              if (!item.selected) {
+                item.selected = true
+              } else {
+                delete item.selected
+              }
+            }
+          })
         }
-      })
 
-      return states
-    })
+        return states
+      },
+    )
 
-    // @ts-ignore
     setResultState(newData)
   }
 
   const onHeaderSelectionChange = React.useCallback(
-    (event: GridHeaderSelectionChangeEvent) => {
-      const checkboxElement: boolean = event.syntheticEvent.target.checked
+    (event: GridHeaderSelectionChangeEvent): void => {
+      const checkboxElement: boolean = (
+        event.syntheticEvent.target as HTMLInputElement
+      ).checked
 
-      let result: (IFile | GroupResult)[] = []
+      const result = JSON.parse(JSON.stringify(resultState))
 
-      if (checkboxElement) {
-        result = resultState.map((states) => {
+      result.forEach((states: GroupResult | IFile) => {
+        if ("items" in states) {
           states.items.forEach((item: IFile) => {
-            item.selected = true
+            if (item.is_recent_file) return
+            item.selected = checkboxElement
           })
+        }
+      })
 
-          return states
-        })
-      } else {
-        result = resultState.map((states) => {
-          states.items.forEach((item: IFile) => {
-            item.selected = false
-          })
-
-          return states
-        })
-      }
-
-      // @ts-ignore
       setResultState(result)
     },
-    [],
+    [resultState],
   )
 
   return (
@@ -150,12 +179,18 @@ export const DocumentLayoutGrid = () => {
         field="date_download"
         columnMenu={ColumnMenu}
         title="Дата загрузки"
+        cells={{
+          data: DateDownloadCell,
+        }}
         filter="numeric"
         width={150}
       />
       <Column
         field="type_document"
         columnMenu={ColumnMenu}
+        cells={{
+          data: TypeCell,
+        }}
         title="Тип документа"
         filter="numeric"
         width={170}
@@ -163,6 +198,9 @@ export const DocumentLayoutGrid = () => {
       <Column
         field="status"
         columnMenu={ColumnMenu}
+        cells={{
+          data: StatusCell,
+        }}
         title="Статус"
         width={170}
       />
@@ -176,21 +214,11 @@ export const DocumentLayoutGrid = () => {
       <Column
         field="who_changed_upload"
         columnMenu={ColumnMenu}
+        cells={{
+          data: WhoDownloadCell,
+        }}
         title="Кто загрузил / изменил"
       />
     </Grid>
-  )
-}
-export const ColumnMenu = () => {
-  return <></>
-}
-
-export const FileNameCell = (props: GridCustomCellProps) => {
-  const { dataItem } = props
-
-  return (
-    <td {...props.tdProps}>
-      {dataItem.ProductID} {dataItem.filename}
-    </td>
   )
 }
