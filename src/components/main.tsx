@@ -1,17 +1,14 @@
 ////ts-nocheck
 
 import styles from "./main.module.scss"
-import {
-  CircularGauge,
-  DropDownList,
-  TabStrip,
-  TabStripTab,
-} from "@progress/kendo-react-all"
+import { DropDownList, TabStrip, TabStripTab } from "@progress/kendo-react-all"
 import { useEffect, useRef, useState } from "react"
 import { AlignJustify, Building, LayoutGrid, Plus, X } from "lucide-react"
 import { DocumentLayoutGrid } from "./data/DocumentLayoutGrid.tsx"
 import { DialogDirectory } from "./ui/dialog/DialogDirectory/DialogDirectory.tsx"
 import { DialogDownload } from "./ui/dialog/DialogDownload/DialogDownload.tsx"
+import { Statistics } from "./statistics/statistics.tsx"
+import { BlockViewDocument } from "./blockViewDocument/blockViewDocument.tsx"
 
 export const Main = () => {
   const [selectedTab, setSelectedTab] = useState(0)
@@ -217,123 +214,19 @@ export const Main = () => {
         <DialogDirectory onClose={toggleDialogDirectory} />
       )}
 
-      {!visibleDialogDownload && (
+      {visibleDialogDownload && (
         <DialogDownload onClose={toggleDialogDownload} />
       )}
 
       <TabStrip style={{ width: "100%" }} selected={selectedTab}>
         <TabStripTab title="Мои файлы" contentClassName={styles.tabstrip}>
-          <div className={styles.statistics}>
-            <div className={styles.statistics__total}>
-              <p className={styles.statistics__total__count}>
-                68 <span>файлов</span>
-              </p>
-              <div className={styles.statistics__total__memory}>
-                <p>Всего занято</p>
-                <p>10 / 80 гб</p>
-              </div>
-            </div>
-            <div className={styles.statistics__static_circle}>
-              <CircularGauge
-                scale={{ rangeSize: 5 }}
-                value={20}
-                color={"blue"}
-                style={{ width: "60px", height: "60px" }}
-              />
-              <div className={styles.statistics__static_circle__value}>
-                <div className={styles.statistics__static_circle__value__count}>
-                  <span>10 </span>
-                  <span> из 68</span>
-                </div>
-                <div className={styles.statistics__static_circle__value__lists}>
-                  <p>Тестовые документы</p>
-                  <p>*.doc, .docx, .odt, .txt, .rtf</p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.statistics__static_circle}>
-              <CircularGauge
-                scale={{ rangeSize: 5 }}
-                value={20}
-                color={"green"}
-                style={{ width: "60px", height: "60px" }}
-              />
-              <div className={styles.statistics__static_circle__value}>
-                <div className={styles.statistics__static_circle__value__count}>
-                  <span>20 </span>
-                  <span> из 68</span>
-                </div>
-                <div className={styles.statistics__static_circle__value__lists}>
-                  <p>Электронная таблица</p>
-                  <p>*.doc, .docx, .odt, .txt, .rtf</p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.statistics__static_circle}>
-              <CircularGauge
-                scale={{ rangeSize: 5 }}
-                value={20}
-                color={"orange"}
-                style={{ width: "60px", height: "60px" }}
-              />
-              <div className={styles.statistics__static_circle__value}>
-                <div className={styles.statistics__static_circle__value__count}>
-                  <span>10 </span>
-                  <span> из 68</span>
-                </div>
-                <div className={styles.statistics__static_circle__value__lists}>
-                  <p>Презентации</p>
-                  <p>*.doc, .docx, .odt, .txt, .rtf</p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.statistics__static_circle}>
-              <CircularGauge
-                scale={{ rangeSize: 5 }}
-                value={20}
-                color={"red"}
-                style={{ width: "60px", height: "60px" }}
-              />
-              <div className={styles.statistics__static_circle__value}>
-                <div className={styles.statistics__static_circle__value__count}>
-                  <span>10 </span>
-                  <span> из 68</span>
-                </div>
-                <div className={styles.statistics__static_circle__value__lists}>
-                  <p>Документы</p>
-                  <p>*.doc, .docx, .odt, .txt, .rtf</p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.statistics__static_circle}>
-              <CircularGauge
-                scale={{ rangeSize: 5 }}
-                value={20}
-                color={"grey"}
-                style={{ width: "60px", height: "60px" }}
-              />
-              <div className={styles.statistics__static_circle__value}>
-                <div className={styles.statistics__static_circle__value__count}>
-                  <span>10 </span>
-                  <span> из 68</span>
-                </div>
-                <div className={styles.statistics__static_circle__value__lists}>
-                  <p>Другие файлы</p>
-                  <p style={{ visibility: "hidden" }}>
-                    *.doc, .docx, .odt, .txt, .rtf
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Statistics />
 
           <div className={styles.table_document}>
-            <DocumentLayoutGrid />
+            {optionLayout ? <BlockViewDocument /> : <DocumentLayoutGrid />}
           </div>
         </TabStripTab>
-        <TabStripTab title="Файлы клиента">
-          <p>Файлы клиента</p>
-        </TabStripTab>
+        <TabStripTab title="Файлы клиента"></TabStripTab>
         <TabStripTab title="Корзина: -">
           <p>Корзина: -</p>
         </TabStripTab>

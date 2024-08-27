@@ -130,7 +130,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         width: 300px;
         height: 200px;
 
@@ -186,8 +185,10 @@
 }
 
 .upload_button {
+  margin-top: 30px;
   border: none;
   background: none;
+
   .k-button-solid-base {
     border: none;
     background: none;

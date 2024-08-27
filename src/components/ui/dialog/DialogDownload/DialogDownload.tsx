@@ -1,9 +1,4 @@
-import {
-  Dialog,
-  Upload,
-  UploadListItemProps,
-  UploadOnAddEvent,
-} from "@progress/kendo-react-all"
+import { Dialog, Upload, UploadListItemProps } from "@progress/kendo-react-all"
 import { DialogDownloadTitle } from "./DialogDownloadTitle.tsx"
 import { CircleCheck, CirclePlus, CircleX } from "lucide-react"
 import { useEffect, useRef } from "react"
@@ -24,8 +19,7 @@ export const DialogDownload = ({ onClose }: Props) => {
     }
   }, [block_upload, btn_upload])
 
-  const handleAddFiles = (e: UploadOnAddEvent) => {
-    console.log(e)
+  const handleAddFiles = () => {
     const kUploadFiles = document.querySelector(
       ".k-upload-files",
     ) as HTMLElement
@@ -44,7 +38,6 @@ export const DialogDownload = ({ onClose }: Props) => {
       >
         <div ref={documentsRef} className="download_file__content"></div>
         <div className="download_file__line" />
-
         <div className="download_file__add_file">
           <p>Добавить ещё файлы?</p>
           <div className="download_file__add_file__block" ref={block_upload}>
@@ -82,8 +75,8 @@ const CustomListItemUI = (props: UploadListItemProps) => {
   return (
     <ul className={"download_file__content"}>
       {props.files.map((file, index) => (
-        <li className={"download_file__content__item"} key={file.uid}>
-          <div className="download_file__content__item__first">{index + 1}</div>
+        <li className={"download_file__content__item"} key={index}>
+          <div className="download_file__content__item__first"></div>
           <div className="download_file__content__item__second">
             <svg
               xmlns="http://www.w3.org/2000/svg"

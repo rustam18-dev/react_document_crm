@@ -3,6 +3,7 @@
   -webkit-box-shadow: inset 0px 2px 21px -10px rgba(0, 0, 0, 0.55) !important;
   -moz-box-shadow: inset 0px 2px 21px -10px rgba(0, 0, 0, 0.55) !important;
   box-shadow: inset 0px 2px 21px -10px rgba(0, 0, 0, 0.55) !important;
+  height: 100%;
 
   .k-table-tbody {
     background: #fafbfb !important;
@@ -122,6 +123,10 @@
 
 .k-grid-header, .k-grid-header-wrap, .k-grouping-header, .k-grid .k-table-th, .k-grid td, .k-grid .k-table-td, .k-grid-footer, .k-grid-footer-wrap, .k-grid-content-locked, .k-grid-footer-locked, .k-grid-header-locked, .k-filter-row > .k-table-th, .k-filter-row > td, .k-filter-row > .k-table-td {
   border: none;
+}
+
+.k-grid-content .k-virtual-content {
+  height: 100vh;
 }
 
 .k-grid {
