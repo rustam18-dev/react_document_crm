@@ -1,7 +1,7 @@
 .dropdown_recent_block {
   display: flex;
   flex-direction: column;
-  padding: 10px 0 0 40px;
+  padding: 10px 0 10px 40px;
 
 
   .dropdown_recent_text {
@@ -30,10 +30,11 @@
   .block_view {
     display: grid;
     padding: 10px;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(7, auto);
     grid-gap: 30px;
     grid-auto-flow: row dense;
     transition: all .3s;
+
 
     &__item {
       display: flex;
@@ -41,20 +42,43 @@
       justify-content: center;
       border-radius: 10px;
       padding: 4px;
-      max-width: 250px;
+      max-width: 200px;
       gap: 8px;
+
+      &:hover {
+        background: #fff8ef;
+        outline: 2px solid orange;
+      }
 
       &_parameters {
         display: flex;
         gap: 10px;
         margin-left: 4px;
         cursor: pointer;
+
       }
 
       .block_view__item_type {
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+
+
+        span {
+          width: 70px;
+          position: absolute;;
+          height: 20px;
+          background: orange;
+          top: -8px;
+          right: 15px;
+          color: white;
+          border-radius: 10px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
 
       .block_view__item_information {
@@ -64,8 +88,8 @@
         justify-content: center;
         gap: 10px;
 
-        .block_view__item_information__name {
 
+        .block_view__item_information__name {
         }
 
         .block_view__item_information__type {
@@ -76,6 +100,7 @@
           background: #25bde5;
           border-radius: 15px;
           padding: 4px 8px;
+
         }
 
       }
@@ -137,12 +162,24 @@
       gap: 8px;
       width: 100% !important;
 
+      &:hover {
+        background: #fff8ef;
+        outline: 2px solid orange;
+      }
 
       &_parameters {
         display: flex;
         gap: 10px;
         margin-left: 4px;
         cursor: pointer;
+        justify-content: space-between;
+        padding: 0 50px 0 30px;
+
+        &_action {
+          display: flex;
+          gap: 10px;
+          padding-left: 10px;
+        }
       }
 
       .block_view__item_type {
@@ -189,3 +226,7 @@
   }
 }
 
+.active {
+  background: #fff8ef;
+  outline: 2px solid orange;
+}

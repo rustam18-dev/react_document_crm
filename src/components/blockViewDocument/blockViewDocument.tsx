@@ -7,16 +7,20 @@ import { useAppSelector } from "../../hooks/redux.ts"
 import { Badge } from "../data/badge.tsx"
 import { PDFIcon } from "../../assets/svg/PDFIcon.tsx"
 import { ExcelIcon } from "../../assets/svg/ExcelIcon.tsx"
+import { useActions } from "../../hooks/actions.ts"
 
 export const BlockViewDocument = () => {
-  const [isRecent, setIsRecent] = useState<boolean>(true)
-  const [isRotated, setIsRotated] = useState(true)
-
+  const [isRotatedRecent, setIsRotatedRecent] = useState(true)
+  const [isRotatedAll, setIsRotatedAll] = useState(true)
+  const { checkRecentFiles } = useActions()
   const { documents } = useAppSelector((state) => state.document)
 
-  const handleDropdownClick = () => {
-    setIsRotated(!isRotated)
-    setIsRecent(!isRecent)
+  const handleDropdownClick = (isRecent: boolean) => {
+    if (isRecent) {
+      setIsRotatedRecent(!isRotatedRecent)
+    } else {
+      setIsRotatedAll(!isRotatedAll)
+    }
   }
 
   return (
@@ -24,7 +28,7 @@ export const BlockViewDocument = () => {
       <div className={styles.dropdown_recent_block}>
         <div
           className={styles.dropdown_recent_text}
-          onClick={handleDropdownClick}
+          onClick={() => handleDropdownClick(true)}
         >
           <svg
             tabIndex={0}
@@ -32,7 +36,7 @@ export const BlockViewDocument = () => {
             width="16.5"
             height="8"
             viewBox="0 0 16.5 8"
-            className={isRotated ? styles.rotate180 : ""}
+            className={isRotatedRecent ? styles.rotate180 : ""}
           >
             <path
               id="Контур_6814"
@@ -48,13 +52,23 @@ export const BlockViewDocument = () => {
         </div>
         <div
           className={styles.block_view}
-          style={isRotated ? { display: "grid" } : { display: "none" }}
+          style={isRotatedRecent ? { display: "grid" } : { display: "none" }}
         >
           {documents.map((_item, index) => {
             return (
-              <div key={index} className={styles.block_view__item}>
+              <div
+                key={index}
+                className={
+                  _item.selected
+                    ? styles.block_view__item + " " + styles.active
+                    : styles.block_view__item
+                }
+              >
                 <div className={styles.block_view__item_parameters}>
-                  <Checkbox size={"large"} />
+                  <Checkbox
+                    size={"large"}
+                    onClick={() => checkRecentFiles(_item)}
+                  />
                   <p>
                     <svg
                       id="File_Options"
@@ -74,6 +88,7 @@ export const BlockViewDocument = () => {
                   </p>
                 </div>
                 <div className={styles.block_view__item_type}>
+                  {_item.status && <span>{_item.status}</span>}
                   {_item.type_document === ".docx" ? (
                     <WordIcon />
                   ) : _item.type_document === ".pdf" ? (
@@ -82,7 +97,7 @@ export const BlockViewDocument = () => {
                     <ExcelIcon />
                   ) : null}
                 </div>
-                <p className={styles.block_view__item_information}>
+                <div className={styles.block_view__item_information}>
                   <img
                     src={avatar}
                     alt="avatar"
@@ -93,7 +108,7 @@ export const BlockViewDocument = () => {
                     {_item.who_changed_upload}
                   </span>
                   <Badge type_download={_item.type_document} />
-                </p>
+                </div>
                 <p className={styles.block_view__item_filename}>
                   {_item.filename}
                 </p>
@@ -105,7 +120,7 @@ export const BlockViewDocument = () => {
       <div className={styles.dropdown_all_block}>
         <div
           className={styles.dropdown_recent_text}
-          onClick={handleDropdownClick}
+          onClick={() => handleDropdownClick(false)}
         >
           <svg
             tabIndex={0}
@@ -113,7 +128,7 @@ export const BlockViewDocument = () => {
             width="16.5"
             height="8"
             viewBox="0 0 16.5 8"
-            className={isRotated ? styles.rotate180 : ""}
+            className={isRotatedAll ? styles.rotate180 : ""}
           >
             <path
               id="Контур_6814"
@@ -129,30 +144,58 @@ export const BlockViewDocument = () => {
         </div>
         <div
           className={styles.block_view}
-          style={isRotated ? { display: "grid" } : { display: "none" }}
+          style={isRotatedAll ? { display: "grid" } : { display: "none" }}
         >
           {documents.map((_item, index) => {
             return (
-              <div key={index} className={styles.block_view__item}>
+              <div
+                key={index}
+                className={
+                  _item.selected
+                    ? styles.block_view__item + " " + styles.active
+                    : styles.block_view__item
+                }
+              >
                 <div className={styles.block_view__item_parameters}>
-                  <Checkbox size={"large"} />
-                  <p>
+                  <div className={styles.block_view__item_parameters_action}>
+                    <Checkbox
+                      size={"large"}
+                      onClick={() => checkRecentFiles(_item)}
+                    />
+                    <p>
+                      <svg
+                        id="File_Options"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="26.002"
+                        height="6"
+                        viewBox="0 0 26.002 6"
+                      >
+                        <path
+                          id="Объединение_593"
+                          data-name="Объединение 593"
+                          d="M17956.5-6558a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,17956.5-6558Zm-10,0a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,17946.5-6558Zm-10,0a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,17936.5-6558Z"
+                          transform="translate(-17936.5 6560.999)"
+                          fill="#717171"
+                        />
+                      </svg>
+                    </p>
+                  </div>
+                  <span>
                     <svg
-                      id="File_Options"
                       xmlns="http://www.w3.org/2000/svg"
-                      width="26.002"
-                      height="6"
-                      viewBox="0 0 26.002 6"
+                      width="7.409"
+                      height="14.817"
+                      viewBox="0 0 7.409 14.817"
                     >
                       <path
-                        id="Объединение_593"
-                        data-name="Объединение 593"
-                        d="M17956.5-6558a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,17956.5-6558Zm-10,0a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,17946.5-6558Zm-10,0a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,17936.5-6558Z"
-                        transform="translate(-17936.5 6560.999)"
-                        fill="#717171"
+                        id="Контур_5994"
+                        data-name="Контур 5994"
+                        d="M424.907,20l7.409,7.409-7.409,7.409"
+                        transform="translate(-424.907 -20)"
+                        fill="#969696"
                       />
                     </svg>
-                  </p>
+                  </span>
                 </div>
                 <div className={styles.block_view__item_type}>
                   <svg

@@ -3,28 +3,22 @@ type Props = {
 }
 
 export const Badge = ({ type_download }: Props) => {
-  const generateBackgroundColor = (): string => {
-    if (type_download === ".docx") {
-      return "#25bde5"
-    }
-    if (type_download === ".xlsx") {
-      return "#2fb797"
-    }
-
-    if (type_download === ".pdf") {
-      return "#bc534e"
-    }
-
-    return "#25bde5"
+  const backgroundColors: { [key: string]: string } = {
+    ".docx": "#25bde5",
+    ".xlsx": "#2fb797",
+    ".pdf": "#bc534e",
   }
+
+  const generateBackgroundColor = (): string => {
+    return backgroundColors[type_download] || "#25bde5"
+  }
+
   return (
-    <>
-      <div
-        className={"badge"}
-        style={{ backgroundColor: generateBackgroundColor() }}
-      >
-        *{type_download}
-      </div>
-    </>
+    <div
+      className={"badge"}
+      style={{ backgroundColor: generateBackgroundColor() }}
+    >
+      *{type_download}
+    </div>
   )
 }

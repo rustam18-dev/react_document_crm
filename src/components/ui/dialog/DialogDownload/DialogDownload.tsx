@@ -1,4 +1,9 @@
-import { Dialog, Upload, UploadListItemProps } from "@progress/kendo-react-all"
+import {
+  Dialog,
+  Upload,
+  UploadFileInfo,
+  UploadListItemProps,
+} from "@progress/kendo-react-all"
 import { DialogDownloadTitle } from "./DialogDownloadTitle.tsx"
 import { CircleCheck, CirclePlus, CircleX } from "lucide-react"
 import { useEffect, useRef } from "react"
@@ -74,9 +79,9 @@ export const DialogDownload = ({ onClose }: Props) => {
 const CustomListItemUI = (props: UploadListItemProps) => {
   return (
     <ul className={"download_file__content"}>
-      {props.files.map((file, index) => (
+      {props.files.map((file: UploadFileInfo, index) => (
         <li className={"download_file__content__item"} key={index}>
-          <div className="download_file__content__item__first"></div>
+          <div className="download_file__content__item__first">{file.uid}</div>
           <div className="download_file__content__item__second">
             <svg
               xmlns="http://www.w3.org/2000/svg"
