@@ -9,11 +9,7 @@ import { CircleCheck, CirclePlus, CircleX } from "lucide-react"
 import { useEffect, useRef } from "react"
 import "../../../../assets/css/ui/dialog/dialogDownloadFile.scss"
 
-type Props = {
-  onClose: () => void
-}
-
-export const DialogDownload = ({ onClose }: Props) => {
+export const DialogDownload = () => {
   const documentsRef = useRef<HTMLDivElement | null>(null)
   const block_upload = useRef<HTMLDivElement | null>(null)
   const btn_upload = useRef<HTMLDivElement | null>(null)
@@ -37,7 +33,7 @@ export const DialogDownload = ({ onClose }: Props) => {
   return (
     <>
       <Dialog
-        title={<DialogDownloadTitle onClose={onClose} />}
+        title={<DialogDownloadTitle />}
         className="download_file"
         closeIcon={false}
       >

@@ -6,15 +6,11 @@ import {
 } from "@progress/kendo-react-all"
 import { DialogDirectoryTitle } from "./DialogDirectoryTitle.tsx"
 
-type Props = {
-  onClose: () => void
-}
-
-export const DialogDirectory = ({ onClose }: Props) => {
+export const DialogDirectory = () => {
   return (
     <>
       <Dialog
-        title={<DialogDirectoryTitle onClose={onClose} />}
+        title={<DialogDirectoryTitle />}
         className="directory_dialog"
         closeIcon={false}
       >
