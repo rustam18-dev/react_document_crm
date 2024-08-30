@@ -1,5 +1,6 @@
 import {
   Dialog,
+  ProgressBar,
   Upload,
   UploadFileInfo,
   UploadListItemProps,
@@ -77,7 +78,7 @@ const CustomListItemUI = (props: UploadListItemProps) => {
     <ul className={"download_file__content"}>
       {props.files.map((file: UploadFileInfo, index) => (
         <li className={"download_file__content__item"} key={index}>
-          <div className="download_file__content__item__first">{file.uid}</div>
+          <div className="download_file__content__item__first">{index}</div>
           <div className="download_file__content__item__second">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -97,10 +98,14 @@ const CustomListItemUI = (props: UploadListItemProps) => {
           </div>
           <div className="download_file__content__item__third">{file.name}</div>
           <div className="download_file__content__item__fourth">
-            <CircleCheck color={"orange"} />
+            {file.progress >= 100 ? (
+              <CircleCheck color={"orange"} />
+            ) : (
+              <ProgressBar value={file.progress} className={"progress"} />
+            )}
           </div>
           <div className="download_file__content__item__fifth">
-            <span>{file.progress}</span>
+            <span></span>
             <span>
               <CircleX color={"grey"} />
             </span>

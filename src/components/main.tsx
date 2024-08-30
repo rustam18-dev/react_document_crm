@@ -17,8 +17,8 @@ export const Main = () => {
     (state) => state.dialogDirectory,
   )
   const [selectedTab, setSelectedTab] = useState(0)
-  const [optionLayout, setOptionLayout] = useState(true)
-
+  const [optionLayout, setOptionLayout] = useState(false)
+  const [selectedCheck, setSelectedCheck] = useState<string>("")
   return (
     <div className={styles.main}>
       <Navigation
@@ -26,6 +26,7 @@ export const Main = () => {
         setSelectedTab={setSelectedTab}
         optionLayout={optionLayout}
         selectedTab={selectedTab}
+        setSelectCheck={(key) => setSelectedCheck(key)}
       />
       {visibilityDialogDirectory && <DialogDirectory />}
       {visibilityDialogDownload && <DialogDownload />}
@@ -34,7 +35,11 @@ export const Main = () => {
           <Statistics />
 
           <div className={styles.table_document}>
-            {optionLayout ? <BlockViewDocument /> : <DocumentLayoutGrid />}
+            {optionLayout ? (
+              <BlockViewDocument />
+            ) : (
+              <DocumentLayoutGrid selectedCheck={selectedCheck} />
+            )}
           </div>
         </TabStripTab>
         <TabStripTab title="Файлы клиента"></TabStripTab>

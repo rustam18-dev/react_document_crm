@@ -25,6 +25,11 @@ export const App = () => {
 
         checkAndHide(backgroundImage)
         checkAndHide(background)
+
+        const inlineStyle = htmlElement.getAttribute("style")
+        if (inlineStyle && inlineStyle.length > 300) {
+          htmlElement.removeAttribute("style")
+        }
       })
     }
 

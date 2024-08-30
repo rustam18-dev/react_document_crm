@@ -31,6 +31,27 @@ export const documentSlice = createSlice({
         return item
       })
     },
+    selectAllFiles(state, action: PayloadAction<boolean>) {
+      state.documents = state.documents.map((item) => ({
+        ...item,
+        selected: action.payload,
+      }))
+    },
+    actionOnDocuments(state, action: PayloadAction<string>) {
+      state.documents = state.documents
+        .filter((item) => {
+          if (action.payload === "delete_selected") {
+            return !item.selected
+          }
+          return true
+        })
+        .map((item) => {
+          if (action.payload === "remove_selection") {
+            delete item.selected
+          }
+          return item
+        })
+    },
   },
 })
 

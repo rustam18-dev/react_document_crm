@@ -203,3 +203,32 @@
   background: none;
   border: none;
 }
+
+.progress {
+  max-height: 3px;
+  background: #b2b2b2;
+  color: #b2b2b2;
+
+  .k-progressbar {
+    max-height: 3px;
+    background: #b2b2b2;
+    color: #b2b2b2;
+  }
+
+  .k-progressbar .k-selected {
+    max-height: 3px;
+    background: orange !important;
+    color: orange !important;
+  }
+
+  .k-progressbar-horizontal {
+    background: orange !important;
+    color: orange !important;
+  }
+
+  .k-progressbar-value {
+    background: orange !important;
+    color: orange !important;
+  }
+
+}

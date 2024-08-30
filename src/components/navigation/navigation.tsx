@@ -14,46 +14,33 @@ import { useAppSelector } from "../../hooks/redux.ts"
 import { useActions } from "../../hooks/actions.ts"
 import { useEffect, useRef, useState } from "react"
 import { ThinArrow } from "../../assets/svg/ThinArrow.tsx"
+import { dropdownData, IDropdownData } from "./navigation.data.ts"
 
 type Props = {
   setOptionLayout: (option: boolean) => void
   setSelectedTab: (id: number) => void
   optionLayout: boolean
   selectedTab: number
+  setSelectCheck: (data: string) => void
 }
-
-const dropdownData = [
-  {
-    id: 1,
-    title: "Cнять выбор",
-  },
-  {
-    id: 2,
-    title: "Загрузить как ZIP",
-  },
-  {
-    id: 3,
-    title: "Удалить выбранные",
-  },
-  {
-    id: 4,
-    title: "Переместить в папку ...",
-  },
-]
 
 export const Navigation = ({
   setOptionLayout,
   setSelectedTab,
   optionLayout,
   selectedTab,
+  setSelectCheck,
 }: Props) => {
   const { documents } = useAppSelector((state) => state.document)
-  const { toggleDialogDownload, toggleDialogDirectory } = useActions()
+  const { toggleDialogDownload, toggleDialogDirectory, actionOnDocuments } =
+    useActions()
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   const [isCreate, setIsCreate] = useState<boolean>(false)
   const [isCheckedDropdown, setIsCheckedDropdown] = useState<boolean>(false)
-  const [selectedCheck, setSelectedCheck] = useState<string>("Снять выбор")
+  const [selectedCheck, setSelectedCheck] = useState<IDropdownData>(
+    dropdownData[0],
+  )
 
   const handleSelectTab = (id: number) => {
     setSelectedTab(id)
@@ -231,7 +218,14 @@ export const Navigation = ({
                       styles.navigation__branch_and_create__btn_block__dropdown__values
                     }
                   >
-                    <span>{selectedCheck}</span>
+                    <span
+                      onClick={() => {
+                        actionOnDocuments(selectedCheck.key)
+                        setSelectCheck(selectedCheck.key)
+                      }}
+                    >
+                      {selectedCheck.title}
+                    </span>
                     <div
                       className={isCheckedDropdown ? styles.flex : styles.dNone}
                     >
@@ -239,11 +233,11 @@ export const Navigation = ({
                         <span
                           key={item.id}
                           onClick={() => {
-                            setSelectedCheck(item.title)
+                            setSelectedCheck(item)
                             setIsCheckedDropdown(false)
                           }}
                           className={
-                            selectedCheck === item.title
+                            selectedCheck.title === item.title
                               ? styles.active_dropdown
                               : ""
                           }

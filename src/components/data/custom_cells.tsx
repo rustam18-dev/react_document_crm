@@ -1,7 +1,8 @@
-import { GridCustomCellProps } from "@progress/kendo-react-all"
+import { Checkbox, GridCustomCellProps } from "@progress/kendo-react-all"
 import { CalendarDays } from "lucide-react"
 import { Badge } from "./badge.tsx"
 import { Status } from "./status.tsx"
+import { useActions } from "../../hooks/actions.ts"
 
 export const ColumnMenu = () => {
   return <></>
@@ -126,4 +127,19 @@ export const WhoDownloadCell = (props: GridCustomCellProps) => {
   const { dataItem } = props
 
   return <td {...props.tdProps}>{dataItem.who_changed_upload}</td>
+}
+
+export const CheckedCell = (props: GridCustomCellProps) => {
+  const { dataItem } = props
+  const { checkRecentFiles } = useActions()
+
+  return (
+    <td {...props.tdProps}>
+      <Checkbox
+        className={"checkbox_table"}
+        size={"large"}
+        onClick={() => checkRecentFiles(dataItem)}
+      />
+    </td>
+  )
 }

@@ -22,6 +22,8 @@ import {
   TypeCell,
   WhoDownloadCell,
 } from "./custom_cells.tsx"
+import { useActions } from "../../hooks/actions.ts"
+import { useEffect } from "react"
 
 const DATA_ITEM_KEY = "id"
 const SELECTED_FIELD = "selected"
@@ -46,15 +48,15 @@ const processWithGroups = (data: IFile[], group: GroupDescriptor[]) => {
     })
   }
 
-  newDataState.forEach((state, index) => {
+  newDataState.forEach((state) => {
     if ("value" in state) {
       state.value = state.value ? "Недавние файлы:" : "Все файлы:"
     }
 
     if ("items" in state) {
-      state.items = state.items.map((item, idx) => ({
+      state.items = state.items.map((item) => ({
         ...item,
-        id: `${item.id}-${index}-${idx}`,
+        id: item.id,
       }))
     }
   })
@@ -62,8 +64,12 @@ const processWithGroups = (data: IFile[], group: GroupDescriptor[]) => {
   return newDataState
 }
 
-export const DocumentLayoutGrid = () => {
+type Props = {
+  selectedCheck: string
+}
+export const DocumentLayoutGrid = ({ selectedCheck }: Props) => {
   const { documents } = useAppSelector((state) => state.document)
+  const { checkRecentFiles, selectAllFiles } = useActions()
 
   const [group, setGroup] = React.useState(initialGroup)
   const [resultState, setResultState] = React.useState<(GroupResult | IFile)[]>(
@@ -104,29 +110,50 @@ export const DocumentLayoutGrid = () => {
     collapsedIds: collapsedState,
   })
 
-  const onSelectionChange = (e: GridSelectionChangeEvent) => {
-    const result = JSON.parse(JSON.stringify(resultState))
+  useEffect(() => {
+    if (selectedCheck === "remove_selection") {
+      const result = JSON.parse(JSON.stringify(resultState))
 
-    const newData: (GroupResult | IFile)[] = result.map(
-      (states: GroupResult | IFile) => {
+      result.forEach((states: GroupResult | IFile) => {
         if ("items" in states) {
           states.items.forEach((item: IFile) => {
-            if (item.id === e.dataItem.id) {
-              if (!item.selected) {
-                item.selected = true
-              } else {
-                delete item.selected
-              }
-            }
+            item.selected = false
           })
         }
+      })
 
-        return states
-      },
-    )
+      setResultState(result)
+    }
+  }, [selectedCheck])
 
-    setResultState(newData)
-  }
+  const onSelectionChange = React.useCallback(
+    (e: GridSelectionChangeEvent) => {
+      checkRecentFiles(e.dataItem)
+
+      const result = JSON.parse(JSON.stringify(resultState))
+
+      const newData: (GroupResult | IFile)[] = result.map(
+        (states: GroupResult | IFile) => {
+          if ("items" in states) {
+            states.items.forEach((item: IFile) => {
+              if (item.id === e.dataItem.id) {
+                if (!item.selected) {
+                  item.selected = true
+                } else {
+                  delete item.selected
+                }
+              }
+            })
+          }
+
+          return states
+        },
+      )
+
+      setResultState(newData)
+    },
+    [checkRecentFiles, resultState, documents, selectedCheck],
+  )
 
   const onHeaderSelectionChange = React.useCallback(
     (event: GridHeaderSelectionChangeEvent): void => {
@@ -134,12 +161,13 @@ export const DocumentLayoutGrid = () => {
         event.syntheticEvent.target as HTMLInputElement
       ).checked
 
+      selectAllFiles(checkboxElement)
+
       const result = JSON.parse(JSON.stringify(resultState))
 
       result.forEach((states: GroupResult | IFile) => {
         if ("items" in states) {
           states.items.forEach((item: IFile) => {
-            if (item.is_recent_file) return
             item.selected = checkboxElement
           })
         }
@@ -147,7 +175,7 @@ export const DocumentLayoutGrid = () => {
 
       setResultState(result)
     },
-    [resultState],
+    [selectAllFiles, resultState, documents],
   )
 
   return (
