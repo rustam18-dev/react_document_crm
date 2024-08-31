@@ -17,7 +17,7 @@ export const Main = () => {
     (state) => state.dialogDirectory,
   )
   const [selectedTab, setSelectedTab] = useState(0)
-  const [optionLayout, setOptionLayout] = useState(false)
+  const [optionLayout, setOptionLayout] = useState(true)
   const [selectedCheck, setSelectedCheck] = useState<string>("")
   return (
     <div className={styles.main}>

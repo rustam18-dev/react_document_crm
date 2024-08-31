@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit"
 
 type DialogDownloadState = {
   visibilityDialogDownload: boolean
+  step: number
 }
 
 const initialState: DialogDownloadState = {
-  visibilityDialogDownload: false,
+  visibilityDialogDownload: true,
+  step: 1,
 }
 
 export const dialogDownloadSlice = createSlice({
@@ -14,6 +16,12 @@ export const dialogDownloadSlice = createSlice({
   reducers: {
     toggleDialogDownload(state) {
       state.visibilityDialogDownload = !state.visibilityDialogDownload
+    },
+    nextStep(state) {
+      state.step++
+    },
+    prevStep(state) {
+      state.step--
     },
   },
 })
