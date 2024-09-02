@@ -35,7 +35,14 @@ export const DialogDownloadContent = () => {
     <div>
       {step !== 1 && (
         <div className={"download_file__group_file"}>
-          Укажите назначение для каждого или группы файлов
+          <span>Укажите назначение для каждого или группы файлов</span>
+          <div>
+            <DropDownList
+              className={"download_file__dropdown"}
+              defaultValue={"Не распределены"}
+              data={["Не распределены", "Распределены"]}
+            />
+          </div>
         </div>
       )}
       <div ref={documentsRef} className="download_file__content"></div>
@@ -136,7 +143,7 @@ const CustomListItemUI = (props: UploadListItemProps) => {
             </div>
             <div className="download_file__content__item__fourth">
               {step === 1 ? (
-                <div style={{ width: "100%" }}>
+                <div style={{ width: "80%" }}>
                   {file.progress >= 100 ? (
                     <CircleCheck color={"orange"} />
                   ) : (
@@ -144,7 +151,10 @@ const CustomListItemUI = (props: UploadListItemProps) => {
                   )}
                 </div>
               ) : (
-                <DropDownList data={["123", "123"]} />
+                <DropDownList
+                  className={"download_file__dropdown"}
+                  data={["123", "123"]}
+                />
               )}
             </div>
             <div className="download_file__content__item__fifth">
